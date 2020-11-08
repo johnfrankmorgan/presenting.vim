@@ -104,6 +104,9 @@ function! s:ShowPage(page_no)
   call append(0, map(range(1,g:presenting_top_margin), '""'))
   normal! gg
   call append(line('$'), map(range(1,winheight('%')-(line('w$')-line('w0')+1)), '""'))
+  if exists('*PresentingOnShowPage')
+    call g:PresentingOnShowPage()
+  endif
   setlocal readonly nomodifiable
 endfunction
 
