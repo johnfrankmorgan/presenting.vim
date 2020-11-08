@@ -89,12 +89,20 @@ function! markdown#format(text, last_line, state)
   elseif a:text =~? '^#\{1,3}[^#]' && g:presenting_figlets && executable('figlet')
     let level = strchars(matchstr(a:text, '^#\+'))
     let font = level == 1 ? g:presenting_font_large : g:presenting_font_small
-    let figlet = split(system('figlet -w '.winwidth(0).' -f '.font.' '.shellescape(substitute(a:text,'^#\+s*','',''))), "\n")
-    let new_text += s:Center(figlet, '#'.level)
+    let figlet = systemlist('figlet -w '.winwidth(0).' -f '.font.' '.shellescape(substitute(a:text,'^#\+s*','','')))
+    if g:presenting_center_titles
+      let new_text += s:Center(figlet, '#'.level)
+    else
+      let new_text += figlet
+    endif
 
   " Headings - Centered Normal Text for ####
   elseif a:text =~? '^####[^#]'
-    let new_text += s:Center([substitute(a:text,'^####\s*','','')], '#4')
+    if g:presenting_center_titles
+      let new_text += s:Center([substitute(a:text,'^####\s*','','')], '#4')
+    else
+      let new_text += [substitute(a:text,'^####\s*','','')]
+    endif
 
 
   " Quote Blocks - Wrap and Left Border
