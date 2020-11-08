@@ -54,7 +54,7 @@ function! markdown#format(text, last_line, state)
   " Code Blocks - Indent. Precede and follow with horzontal line
   elseif a:text =~? '^\s*```'
     let l:state.code = !l:state.code
-    let new_text += ['    '.repeat('━', winwidth(0)-8)]
+    let new_text += ['    '.repeat('━', winwidth(0)-(8+&foldcolumn))]
 
   elseif l:state.code
     let new_text += ['    '.a:text]
